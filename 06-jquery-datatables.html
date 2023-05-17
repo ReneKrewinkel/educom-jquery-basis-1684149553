@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Exercise #6</title>
+        <link rel="stylesheet" href="css/style.css" /> 
+      <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" /> 
+      <script src="js/jquery.js"></script>
+      <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+     
+      <script>
+        $(document).ready( function() {
+          
+
+          const dTable = $("#theBeatles").DataTable({
+            ajax: "https://api.dev-master.ninja/js/beatles", 
+            columns: [
+                  { data: "id"},
+                  { data: "firstname"}, 
+                  { data: "lastname"},                        
+                  { data: "dateOfBirth"},
+                  { data: "email"}
+              ] 
+            })
+
+            // Reload the table every 10 seconds
+            setInterval( function () {
+              dTable.ajax.reload()
+            }, 10000 )
+
+            $("#save").click(function() {
+              const example = {
+                        firstname: $("#firstname").val(),
+                        lastname: $("#lastname").val(),
+                        email: $("#email").val()
+                    }
+
+
+            $.ajax({
+              url: "https://api.dev-master.ninja/js/person/save",
+              method: "POST",
+              data: example, 
+              success: function(example){
+                  console.log(example)
+              }
+            })
+  
+            })
+            
+          
+        })
+      </script>
+  </head>
+  <body>
+      <table id="theBeatles"
+             class="display nowrap dataTable dtr-inline collapsed">
+          <thead>
+            <th>ID</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+          </thead>
+          <tbody> 
+          </tbody>
+      </table>
+  
+      <div id="form" class="">
+        FirstName: <input type="text" id="firstname"><br>
+        LastName: <input type="text" id="lastname"><br>
+        Birth Date: <input type="text" disabled id="birthdate"><br>
+        Email: <input type="text" id="email"><br>
+        <button id="save">Save</button>
+      </div>
+  </body>
+</html>
